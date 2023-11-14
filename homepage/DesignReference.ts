@@ -1,4 +1,4 @@
-class Comparison extends HTMLElement {
+class DesignReference extends HTMLElement {
   
   static ACTIVATE_KEY = 'Backquote'
   static CHANGE_MODE_KEY = 'Tab'
@@ -13,15 +13,25 @@ class Comparison extends HTMLElement {
   
   constructor() {
     super()
-    const shadowRoot = this.attachShadow({ mode: 'open' })
+    const shadowRoot = this.attachShadow({ mode: 'closed' })
     
     shadowRoot.innerHTML = /*html*/`
       <style>
-        .Comparison {
-          --Comparison-opacity: 0.5;
-          --Comparison-wipeX: 0px;
-          --Comparison-wipeY: 0px;
-          --Comparison-wipeAngle: 0deg;
+        :host {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        
+        .DesignReference {
+          --DesignReference-opacity: 0.5;
+          --DesignReference-wipeX: 0px;
+          --DesignReference-wipeY: 0px;
+          --DesignReference-wipeAngle: 0deg;
           position: absolute;
           top: 0;
           right: 0;
@@ -31,14 +41,14 @@ class Comparison extends HTMLElement {
           pointer-events: none;
           z-index: 999;
         }
-        .Comparison-activateKeyHeld {
+        .DesignReference-activateKeyHeld {
           pointer-events: auto;
         }
-        .Comparison-active {}
-        .Comparison-mode-fade {}
-        .Comparison-mode-wipe {}
+        .DesignReference-active {}
+        .DesignReference-mode-fade {}
+        .DesignReference-mode-wipe {}
         
-        .Comparison_ImgWrapper {
+        .DesignReference_ImgWrapper {
           position: absolute;
           top: 0;
           right: 0;
@@ -48,15 +58,15 @@ class Comparison extends HTMLElement {
           overflow: hidden;
           pointer-events: none;
         }
-        .Comparison-active.Comparison-mode-fade > .Comparison_ImgWrapper {
-          opacity: var(--Comparison-opacity);
+        .DesignReference-active.DesignReference-mode-fade > .DesignReference_ImgWrapper {
+          opacity: var(--DesignReference-opacity);
         }
-        .Comparison-active.Comparison-mode-wipe > .Comparison_ImgWrapper {
+        .DesignReference-active.DesignReference-mode-wipe > .DesignReference_ImgWrapper {
           opacity: 1;
           clip-path: url(#ClipPath);
         }
         
-        .Comparison_Img {
+        .DesignReference_Img {
           display: block;
           position: absolute;
           top: 50%;
@@ -64,7 +74,7 @@ class Comparison extends HTMLElement {
           transform: translate(-50%, -50%);
         }
         
-        .Comparison_Svg {
+        .DesignReference_Svg {
           position: absolute;
           top: 0;
           right: 0;
@@ -76,28 +86,28 @@ class Comparison extends HTMLElement {
           pointer-events: none;
         }
         
-        .Comparison_ClipPath {
-          transform: rotate(var(--Comparison-wipeAngle));
+        .DesignReference_ClipPath {
+          transform: rotate(var(--DesignReference-wipeAngle));
           transform-origin: left;
           transform-box: fill-box;
           transition: transform 0.5s;
         }
         
-        .Comparison_ClipPath > rect {
-          x: calc(50% + var(--Comparison-wipeX));
-          y: calc(-150vmax + var(--Comparison-wipeY));
+        .DesignReference_ClipPath > rect {
+          x: calc(50% + var(--DesignReference-wipeX));
+          y: calc(-150vmax + var(--DesignReference-wipeY));
           width: calc(150vmax + 1vmin);
           height: calc(300vmax + 100%);
         }
       </style>
       
-      <div class="Comparison">
-        <div class="Comparison_ImgWrapper">
-          <img class="Comparison_Img" src="./design/desktop-design.jpg" alt="Design Reference"/>
+      <div class="DesignReference">
+        <div class="DesignReference_ImgWrapper">
+          <img class="DesignReference_Img" src="./design/desktop-design.jpg" alt="Design Reference"/>
         </div>
-        <svg class="Comparison_Svg">
+        <svg class="DesignReference_Svg">
           <defs>
-            <clipPath class="Comparison_ClipPath" id="ClipPath">
+            <clipPath class="DesignReference_ClipPath" id="ClipPath">
               <rect/>
             </clipPath>
           </defs>
@@ -105,10 +115,10 @@ class Comparison extends HTMLElement {
       </div>
     `
     
-    this.Container = shadowRoot.querySelector('.Comparison')!
-    this.ImgWrapper = shadowRoot.querySelector('.Comparison_ImgWrapper')!
-    this.Img = shadowRoot.querySelector('.Comparison_Img')!
-    this.ClipPath = shadowRoot.querySelector('.Comparison_ClipPath')!
+    this.Container = shadowRoot.querySelector('.DesignReference')!
+    this.ImgWrapper = shadowRoot.querySelector('.DesignReference_ImgWrapper')!
+    this.Img = shadowRoot.querySelector('.DesignReference_Img')!
+    this.ClipPath = shadowRoot.querySelector('.DesignReference_ClipPath')!
   }
   
   static modes = {
@@ -119,7 +129,7 @@ class Comparison extends HTMLElement {
   activateKeyHeld = false
   active = false
   sticky = false
-  mode = Comparison.modes.FADE
+  mode = DesignReference.modes.FADE
   opacity = 0.5
   initialOpacity = this.opacity
   wipeX = 0
@@ -134,35 +144,35 @@ class Comparison extends HTMLElement {
   screenHeight = 0
   
   updateMode() {
-    this.Container.classList.toggle('Comparison-mode-fade', this.mode === Comparison.modes.FADE)
-    this.Container.classList.toggle('Comparison-mode-wipe', this.mode === Comparison.modes.WIPE)
+    this.Container.classList.toggle('DesignReference-mode-fade', this.mode === DesignReference.modes.FADE)
+    this.Container.classList.toggle('DesignReference-mode-wipe', this.mode === DesignReference.modes.WIPE)
     
     this.updateImageView()
   }
   
   updateImageView() {
     switch (this.mode) {
-      case Comparison.modes.FADE:
+      case DesignReference.modes.FADE:
         this.Container.style.setProperty(
-          '--Comparison-opacity',
+          '--DesignReference-opacity',
           `${this.active ? this.opacity : 0}`
         )
         break
-      case Comparison.modes.WIPE:
+      case DesignReference.modes.WIPE:
         this.Container.style.setProperty(
-          '--Comparison-opacity',
+          '--DesignReference-opacity',
           `${this.active ? 1 : 0}`
         )
         this.Container.style.setProperty(
-          '--Comparison-wipeX',
+          '--DesignReference-wipeX',
           `${this.wipeX}px`
         )
         this.Container.style.setProperty(
-          '--Comparison-wipeY',
+          '--DesignReference-wipeY',
           `${this.wipeY}px`
         )
         this.Container.style.setProperty(
-          '--Comparison-wipeAngle',
+          '--DesignReference-wipeAngle',
           `${this.wipeAngle}deg`
         )
         break
@@ -171,14 +181,14 @@ class Comparison extends HTMLElement {
   
   show() {
     this.active = true
-    this.Container.classList.add('Comparison-active')
+    this.Container.classList.add('DesignReference-active')
     this.updateImageView()
     this.dragStart()
     this.updateCursor()
   }
   
   hide() {
-    this.Container.classList.remove('Comparison-active')
+    this.Container.classList.remove('DesignReference-active')
     this.active = false
     this.updateImageView()
     this.dragEnd()
@@ -186,7 +196,7 @@ class Comparison extends HTMLElement {
   }
   
   changeMode() {
-    const modes = Object.values(Comparison.modes)
+    const modes = Object.values(DesignReference.modes)
     const currentModeIndex = modes.indexOf(this.mode)
     const nextModeIndex = (currentModeIndex + 1) % modes.length
     this.mode = modes[nextModeIndex]
@@ -196,11 +206,11 @@ class Comparison extends HTMLElement {
   
   changeSubMode() {
     switch (this.mode) {
-      case Comparison.modes.FADE:
+      case DesignReference.modes.FADE:
         
         return
         
-      case Comparison.modes.WIPE:
+      case DesignReference.modes.WIPE:
         this.wipeAngle += 90
         this.updateCursor(100)
         this.updateImageView()
@@ -210,21 +220,21 @@ class Comparison extends HTMLElement {
   
   onKeyDown = (e: KeyboardEvent) => {
     switch (e.code) {
-      case Comparison.ACTIVATE_KEY:
+      case DesignReference.ACTIVATE_KEY:
         e.preventDefault()
         if (e.repeat) return
         this.sticky = false
         this.activateKeyHeld = true
-        this.Container.classList.add('Comparison-activateKeyHeld')
+        this.Container.classList.add('DesignReference-activateKeyHeld')
         this.show()
         return
-      case Comparison.CHANGE_MODE_KEY:
+      case DesignReference.CHANGE_MODE_KEY:
         if (!this.activateKeyHeld) return
         e.preventDefault()
         if (e.repeat) return
         this.changeMode()
         return
-      case Comparison.CHANGE_SUB_MODE_KEY:
+      case DesignReference.CHANGE_SUB_MODE_KEY:
         if (!this.activateKeyHeld) return
         e.preventDefault()
         this.changeSubMode()
@@ -234,8 +244,8 @@ class Comparison extends HTMLElement {
   
   onKeyUp = (e: KeyboardEvent) => {
     switch (e.code) {
-      case Comparison.ACTIVATE_KEY:
-        this.Container.classList.remove('Comparison-activateKeyHeld')
+      case DesignReference.ACTIVATE_KEY:
+        this.Container.classList.remove('DesignReference-activateKeyHeld')
         this.activateKeyHeld = false
         if (!this.sticky) {
           this.hide()
@@ -247,7 +257,7 @@ class Comparison extends HTMLElement {
   onMouseDown = (e: MouseEvent) => {
     if (this.activateKeyHeld) {
       e.preventDefault()
-      if (e.buttons === Comparison.ACTIVATE_STICKY_MOUSE_BTN) {
+      if (e.buttons === DesignReference.ACTIVATE_STICKY_MOUSE_BTN) {
         this.sticky = true
       }
     }
@@ -295,7 +305,7 @@ class Comparison extends HTMLElement {
   
   dragMove() {
     const dX = this.currentX - this.initialX
-    this.opacity = Math.min(Math.max(this.initialOpacity + dX / Comparison.SLIDER_WIDTH, 0), 1)
+    this.opacity = Math.min(Math.max(this.initialOpacity + dX / DesignReference.SLIDER_WIDTH, 0), 1)
     
     this.wipeX = this.currentX - this.screenWidth / 2
     this.wipeY = this.currentY - this.screenHeight / 2
@@ -313,11 +323,11 @@ class Comparison extends HTMLElement {
     }
     
     switch (this.mode) {
-      case Comparison.modes.FADE:
+      case DesignReference.modes.FADE:
         this.setCursor('ew-resize', throttle)
         return
         
-      case Comparison.modes.WIPE:
+      case DesignReference.modes.WIPE:
         this.setCursor(this.wipeAngle % 180 >= 90 ? 'row-resize' : 'col-resize', throttle)
         return
     }
@@ -399,6 +409,6 @@ class Comparison extends HTMLElement {
   }
 }
 
-window.customElements.define('design-ref', Comparison)
+window.customElements.define('design-reference', DesignReference)
 
-document.body.appendChild(new Comparison())
+document.body.appendChild(new DesignReference())

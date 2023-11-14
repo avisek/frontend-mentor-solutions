@@ -300,7 +300,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '/Comparison.ts': path.resolve(__dirname, './homepage/Comparison.ts'),
+      '/DesignReference.ts': path.resolve(__dirname, './homepage/DesignReference.ts'),
     },
   },
   plugins: [
