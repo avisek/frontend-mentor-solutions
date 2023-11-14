@@ -1,0 +1,28 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  font-family: 'Barlow', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, 'Noto Sans', 'Liberation Sans', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-weight: 500;
+  line-height: 1.5;
+  background-color: hsl(242deg 51% 90%);
+  color: hsl(263deg 79% 10%);
+}
+
+.Squiggly {
+  -webkit-text-decoration: underline wavy hsl(0deg 92% 70% / 60%) 1.5px;
+  text-decoration: underline wavy hsl(0deg 92% 70% / 60%) 1.5px;
+}

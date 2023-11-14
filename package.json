@@ -1,0 +1,58 @@
+{
+  "name": "frontend-mentor-solutions",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "author": "Avisek Das <avisekdas555@gmail.com>",
+  "description": "Frontend Mentor: A showcase of my front-end skills. This collection features my solutions to various Frontend Mentor challenges, each providing a real-life workflow experience. From designs, assets, and style requirements, I have honed my skills in building responsive and visually appealing websites. Explore my solutions and see the live demos.",
+  "keywords": [
+    "frontendmentor",
+    "web-development",
+    "frontend-web-development",
+    "frontend-mentor-challenges",
+    "frontend-mentor-solutions",
+    "portfolio",
+    "projects",
+    "reactjs"
+  ],
+  "homepage": "https://avisek.github.io/frontend-mentor-solutions/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/avisek/frontend-mentor-solutions.git"
+  },
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.4.3",
+    "axios": "^1.6.0",
+    "classnames": "^2.3.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "fast-glob": "^3.3.1",
+    "magic-string": "^0.30.2",
+    "parse5": "^7.1.2",
+    "picocolors": "^1.0.0",
+    "rollup": "^3.27.1",
+    "sass": "^1.69.5",
+    "tsx": "^3.14.0",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5",
+    "yaml": "^2.3.3"
+  }
+}

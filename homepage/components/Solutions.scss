@@ -1,0 +1,9 @@
+.Solutions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18.5rem, 1fr));
+  justify-items: center;
+  max-width: 75rem;
+  margin: auto;
+  padding: 1.5rem;
+  gap: 1rem;
+}

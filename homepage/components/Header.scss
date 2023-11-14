@@ -1,0 +1,40 @@
+.Header {
+  position: sticky;
+  top: 0;
+  background-color: #edecff;
+  background-color: #e9e8ff;
+  z-index: 10;
+  
+  &_Inner {
+    display: flex;
+    align-items: center;
+    max-width: 83rem;
+    margin: auto;
+    padding: 0.5rem 1.5rem;
+  }
+  
+  &_Icon {
+    width: 3rem;
+    height: 3rem;
+    padding: 0.75rem;
+    background: #fcfcff;
+    border-radius: 1rem;
+    margin-right: 1rem;
+  }
+  
+  &_Title {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 1rem;
+    padding: 0.5rem 0;
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0.5px;
+    text-wrap: balance;
+  }
+  
+  &_Menu {
+    margin-left: auto;
+  }
+}

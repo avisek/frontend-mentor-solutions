@@ -1,0 +1,14 @@
+.AppIcon {
+  width: 2rem;
+  height: 2rem;
+  stroke-width: 1.5px;
+}
+.AppIcon > path:nth-child(1) {
+  stroke: hsl(218.08deg 74.12% 56.18%);
+}
+.AppIcon > path:nth-child(2) {
+  stroke: hsl(255deg 100% 68.46%);
+}
+.AppIcon > path:nth-child(3) {
+  stroke: hsl(190.38deg 61% 39%);
+}
