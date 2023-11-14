@@ -93,7 +93,7 @@ class Comparison extends HTMLElement {
       
       <div class="Comparison">
         <div class="Comparison_ImgWrapper">
-          <img class="Comparison_Img" src="./design/desktop-design.jpg"/>
+          <img class="Comparison_Img" src="./design/desktop-design.jpg" alt="Design Reference"/>
         </div>
         <svg class="Comparison_Svg">
           <defs>
