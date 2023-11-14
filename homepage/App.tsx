@@ -32,7 +32,7 @@ function App() {
               },
               {
                 title: 'Frontend Mentor',
-                href: 'http://',
+                href: 'https://www.frontendmentor.io/profile/avisek',
                 icon: <Icon icon={Icon.FRONTEND_MENTOR}/>,
               },
               {
