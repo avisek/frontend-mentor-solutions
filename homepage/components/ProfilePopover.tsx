@@ -29,7 +29,7 @@ export default function ProfilePopover({ icon, name, hobby, links }: ProfilePopo
         </div>
         <ul className="ProfilePopover_Links">
           {links.map(({ title, href, icon }) =>
-            <li className="ProfilePopover_LinkWrapper">
+            <li className="ProfilePopover_LinkWrapper" key={title + href}>
               <a className="ProfilePopover_Link" href={href} target="_blank">
                 <span>{title}</span>
                 {icon}
