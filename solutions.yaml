@@ -1,3 +1,12 @@
+huddle-landing-page-with-a-single-introductory-section:
+  title: Huddle landing page with single introductory section
+  description: >-
+    A perfect challenge for beginners, this project will get you working with a
+    two column layout.
+  stacks: [HTML, CSS]
+  previewImage: ./design/desktop-preview.jpg
+  challengeLink: https://www.frontendmentor.io/challenges/huddle-landing-page-with-a-single-introductory-section-B_2Wvxgi0
+  solutionLink:
 qr-code-component:
   title: QR code component
   description: >-

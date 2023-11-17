@@ -44,15 +44,9 @@ export default function Solutions({}: SolutionsProps) {
   
   return (
     <div className="Solutions">
-      {Object.entries(solutions).map(([id, solution]) => (<>
+      {Object.entries(solutions).map(([id, solution]) => (
         <Solution key={id} data={solution}/>
-        <Solution key={id} data={solution}/>
-        <Solution key={id} data={solution}/>
-        <Solution key={id} data={solution}/>
-        <Solution key={id} data={solution}/>
-        <Solution key={id} data={solution}/>
-        <Solution key={id} data={solution}/>
-      </>))}
+      ))}
     </div>
   )
 }
