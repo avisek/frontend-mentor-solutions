@@ -52,7 +52,7 @@ The project was very straightforward and easy. I began with a mobile-first appro
 
 ### What I learned
 
-I have learned about the `aria-label` attribute. It is used in web development to provide an accessible label for an element that may not have a visible label. It is particularly important for users who rely on assistive technologies such as screen readers to navigate and interact with web content.
+I have learned about the `aria-label` attribute. It is used to provide an accessible label for an element that may not have a visible label. It is particularly important for users who rely on assistive technologies such as screen readers to navigate and interact with web content.
 
 Here is a common use case for the `aria-label` attribute:
 

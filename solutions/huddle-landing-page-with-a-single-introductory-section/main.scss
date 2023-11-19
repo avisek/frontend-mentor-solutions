@@ -3,24 +3,22 @@
 }
 
 :root {
-  --white: hsl(0, 0%, 100%);
-  --velvet: hsl(257, 40%, 49%);
-  --softMagenta: hsl(300, 69%, 71%);
-  --persianIndigo: hsl(257deg 71.9% 27.68%)
+  --white: hsl(0deg 0% 100%);
+  --velvet: hsl(257deg 40% 49%);
+  --softMagenta: hsl(300deg 69% 71%);
+  --persianIndigo: hsl(257deg 72% 28%);
 }
 
 ::-moz-selection {
   background-color: var(--softMagenta);
   color: var(--white)
 }
-
 ::selection {
   background-color: var(--softMagenta);
   color: var(--white)
 }
 
 html {
-  display: grid;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
@@ -169,7 +167,7 @@ p {
   
   &_Link {
     padding: 4px 8px 4px 4px;
-  margin: -4px -8px -4px -4px;
+    margin: -4px -8px -4px -4px;
     border-radius: 30px;
     color: var(--softMagenta);
     text-decoration: none;
