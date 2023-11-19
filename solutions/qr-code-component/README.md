@@ -28,3 +28,10 @@ This is a solution to the [QR code component challenge on Frontend Mentor](https
 - Mobile-first workflow
 - BEM
 - SCSS
+
+## Author
+
+- GitHub - [@avisek](https://github.com/avisek)
+- Frontend Mentor - [@avisek](https://www.frontendmentor.io/profile/avisek)
+- LinkedIn - [@avisek-das](https://www.linkedin.com/in/avisek-das)
+- Twitter - [@AvisekDs](https://www.twitter.com/AvisekDs)
