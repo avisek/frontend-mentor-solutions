@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import LoadingDots from './LoadingDots'
 import Solution from './Solution'
 import './Solutions.scss'
 
@@ -36,9 +37,17 @@ export default function Solutions({}: SolutionsProps) {
     staleTime: Infinity,
   })
   
-  if (isPending) return 'Loading...'
+  if (isPending) return (
+    <div className="Solutions">
+      <LoadingDots/>
+    </div>
+  )
   
-  if (error) return `An error has occurred: ${error.message}`
+  if (error) return (
+    <div className="Solutions">
+      ${error.message}
+    </div>
+  )
   
   const solutions: SolutionsData = data.data
   
