@@ -1,3 +1,24 @@
+import { ScrollSizeObserver, type ScrollSizeObserverCallback } from 'scroll-size-observer'
+
+function constrainNumber(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max)
+}
+
+
+class DesignImage {
+  url: string
+  
+  translateX = 0
+  translateY = 0
+  
+  scale = 1
+  
+  constructor(url: string) {
+    this.url = url
+  }
+}
+
+
 class DesignReference extends HTMLElement {
   
   static ACTIVATE_KEY = 'Backquote'
@@ -32,11 +53,15 @@ class DesignReference extends HTMLElement {
           --DesignReference-wipeX: 0px;
           --DesignReference-wipeY: 0px;
           --DesignReference-wipeAngle: 0deg;
+          --DesignReference-screenWidth: 0px;
+          --DesignReference-screenHeight: 0px;
           position: absolute;
           top: 0;
-          right: 0;
-          bottom: 0;
+          /* right: 0; */
+          /* bottom: 0; */
           left: 0;
+          width: var(--DesignReference-screenWidth);
+          height: var(--DesignReference-screenHeight);
           overflow: hidden;
           pointer-events: none;
           z-index: 999;
@@ -57,6 +82,7 @@ class DesignReference extends HTMLElement {
           opacity: 0;
           overflow: hidden;
           pointer-events: none;
+          background-color: hsl(257deg 40% 49%);
         }
         .DesignReference-active.DesignReference-mode-fade > .DesignReference_ImgWrapper {
           opacity: var(--DesignReference-opacity);
@@ -88,16 +114,16 @@ class DesignReference extends HTMLElement {
         
         .DesignReference_ClipPath {
           transform: rotate(var(--DesignReference-wipeAngle));
-          transform-origin: left;
+          transform-origin: bottom;
           transform-box: fill-box;
           transition: transform 0.5s;
         }
         
         .DesignReference_ClipPath > rect {
-          x: calc(50% + var(--DesignReference-wipeX));
-          y: calc(-150vmax + var(--DesignReference-wipeY));
-          width: calc(150vmax + 1vmin);
-          height: calc(300vmax + 100%);
+          x: calc(-150vmax + 1 * var(--DesignReference-wipeX));
+          y: calc(-150vmax + 0.5 * var(--DesignReference-screenHeight) + 1 * var(--DesignReference-wipeY));
+          width: calc(300vmax + var(--DesignReference-screenWidth));
+          height: calc(150vmax);
         }
       </style>
       
@@ -124,6 +150,7 @@ class DesignReference extends HTMLElement {
   static modes = {
     FADE: 'fade',
     WIPE: 'wipe',
+    ADJUST: 'adjust',
   }
   
   activateKeyHeld = false
@@ -142,6 +169,22 @@ class DesignReference extends HTMLElement {
   mouseIn = false
   screenWidth = 0
   screenHeight = 0
+  
+  images: DesignImage[] = []
+  activeImageIndex = 0
+  
+  updateImage() {
+    const designImage = this.images[this.activeImageIndex]
+    this.Img.src = designImage.url
+    this.Img.style.setProperty(
+      'transform',
+      [
+        `translate(-50%, -50%)`,
+        `translate(${designImage.translateX}px, ${designImage.translateY}px)`,
+        `scale(${designImage.scale}px, ${designImage.scale}px)`,
+      ].join(' ')
+    )
+  }
   
   updateMode() {
     this.Container.classList.toggle('DesignReference-mode-fade', this.mode === DesignReference.modes.FADE)
@@ -285,6 +328,15 @@ class DesignReference extends HTMLElement {
     }
   }
   
+  onWheel = (e: WheelEvent) => {
+    if (!this.activateKeyHeld) return
+    e.preventDefault()
+    const direction = Math.sign(e.deltaY)
+    if (direction === 0) return
+    this.activeImageIndex = constrainNumber(this.activeImageIndex + direction, 0, this.images.length - 1)
+    this.updateImage()
+  }
+  
   onBlur = () => {
     if (this.activateKeyHeld) {
       this.hide()
@@ -305,7 +357,7 @@ class DesignReference extends HTMLElement {
   
   dragMove() {
     const dX = this.currentX - this.initialX
-    this.opacity = Math.min(Math.max(this.initialOpacity + dX / DesignReference.SLIDER_WIDTH, 0), 1)
+    this.opacity = constrainNumber(this.initialOpacity + dX / DesignReference.SLIDER_WIDTH, 0, 1)
     
     this.wipeX = this.currentX - this.screenWidth / 2
     this.wipeY = this.currentY - this.screenHeight / 2
@@ -328,7 +380,7 @@ class DesignReference extends HTMLElement {
         return
         
       case DesignReference.modes.WIPE:
-        this.setCursor(this.wipeAngle % 180 >= 90 ? 'row-resize' : 'col-resize', throttle)
+        this.setCursor(this.wipeAngle % 180 >= 90 ? 'col-resize' : 'row-resize', throttle)
         return
     }
   }
@@ -370,10 +422,23 @@ class DesignReference extends HTMLElement {
     })
   }
   
-  onResize = () => {
-    this.screenWidth = window.innerWidth
-    this.screenHeight = window.innerHeight
+  onResize: ScrollSizeObserverCallback = entries => {console.log(entries)
+    const entry = entries.find(entry => entry.target === document.body)!
+    
+    this.screenWidth = entry.scrollWidth
+    this.screenHeight = entry.scrollHeight
+    
+    this.Container.style.setProperty(
+      '--DesignReference-screenWidth',
+      `${this.screenWidth}px`,
+    )
+    this.Container.style.setProperty(
+      '--DesignReference-screenHeight',
+      `${this.screenHeight}px`,
+    )
   }
+  
+  scrollSizeObserver: ScrollSizeObserver | null = null
   
   connectedCallback() {
     window.addEventListener('keydown', this.onKeyDown)
@@ -384,17 +449,37 @@ class DesignReference extends HTMLElement {
     document.addEventListener('mouseenter', this.onMouseEnter)
     document.addEventListener('mouseleave', this.onMouseLeave)
     document.addEventListener('contextmenu', this.onContextMenu)
+    document.addEventListener('wheel', this.onWheel, { passive: false })
     
     window.addEventListener('blur', this.onBlur)
     
-    window.addEventListener('resize', this.onResize)
+    this.scrollSizeObserver = new ScrollSizeObserver(this.onResize)
+    this.scrollSizeObserver.observe(document.body)
     
-    this.onResize()
-    this.updateMode()
+    const base = import.meta.env.BASE_URL
+    const url = location.pathname.slice(base.length)
+    
+    const solutionId = url.split('/')[0]
+    
+    fetch(`${base}design-images?id=${solutionId}`)
+      .then(
+        res => res.json()
+      )
+      .then((images: string[]) => {
+        images.forEach(image => {
+          this.images.push(new DesignImage(`${base}${solutionId}/design/${image}`))
+        })
+      })
+      .then(() => {
+        this.updateMode()
+      })
+    
+    // this.updateMode()
   }
   
   disconnectedCallback() {
-    window.removeEventListener('resize', this.onResize)
+    this.scrollSizeObserver!.disconnect()
+    this.scrollSizeObserver = null
     
     window.removeEventListener('keydown', this.onKeyDown)
     window.removeEventListener('keyup', this.onKeyUp)
@@ -404,6 +489,7 @@ class DesignReference extends HTMLElement {
     document.removeEventListener('mouseenter', this.onMouseEnter)
     document.removeEventListener('mouseleave', this.onMouseLeave)
     document.removeEventListener('contextmenu', this.onContextMenu)
+    document.removeEventListener('wheel', this.onWheel)
     
     window.removeEventListener('blur', this.onBlur)
   }

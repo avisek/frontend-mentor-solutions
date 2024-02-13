@@ -5,7 +5,7 @@ import fs from 'node:fs'
 import fsp from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { Url, fileURLToPath } from 'node:url'
 import fastGlob from 'fast-glob'
 import YAML from 'yaml'
 import colors from 'picocolors'
@@ -199,6 +199,57 @@ function solutionsJson(): PluginOption {
 }
 
 
+function parseQueryParams(url: string) {
+  const params: Record<string, string> = {}
+  const query = url.split("?")[1]
+  if (query) {
+    const pairs = query.split("&")
+    pairs.forEach(pair => {
+      const [key, value] = pair.split("=")
+      params[key] = decodeURIComponent(value)
+    })
+  }
+  return params
+}
+
+function getDesignImages(solutionId: string) {
+  if (!solutionId) return null
+  
+  const solutions = fs.readdirSync(solutionsDir)
+  if (!solutions.includes(solutionId)) return null
+  
+  const solutionDir = path.join(solutionsDir, solutionId)
+  if (!fs.existsSync(solutionDir)) return null
+  
+  const designDir = path.join(solutionDir, 'design')
+  if (!fs.existsSync(designDir)) return null
+  
+  return fs.readdirSync(designDir)
+}
+
+function designReference(): PluginOption {
+  return {
+    name: 'designReference',
+    apply: 'serve',
+    
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        if (!req.url.startsWith(`${BASE}design-images?`)) return next()
+        
+        const { id } = parseQueryParams(req.url)
+        const designImages =
+          getDesignImages(id)
+          .filter(name => /^(?!.*-preview\.\w+$).*$/.test(name))
+        
+        return send(req, res, JSON.stringify(designImages, null, 2), 'json', {
+          headers: server.config.server.headers,
+        })
+      })
+    },
+  }
+}
+
+
 function copyRecursively(src: string, dest: string) {
   if (fs.statSync(src).isDirectory()) {
     if (!fs.existsSync(dest)) {
@@ -307,6 +358,7 @@ export default defineConfig({
     router(),
     react(),
     solutionsJson(),
+    designReference(),
     restructureDist(),
     bundleDesignImages(),
     add404Html(),
